@@ -1,0 +1,25 @@
+<form id="uploadStoreForm" enctype="multipart/form-data">
+    <input id="file" type="file" name="file" /><br><br>
+    <button type="submit">Upload store image</button>
+</form>
+
+<div id="results"></div>
+<script>
+    const form = document.getElementById('uploadStoreForm')
+    form.addEventListener('submit', (e) => {
+        e.preventDefault()
+        document.getElementById('results').innerText = 'uploading...'
+        const formData = new FormData(form)
+        fetch('/store/1/watermark', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(jsonData => {
+            // console.log(jsonData)
+            // document.getElementById('results').innerText = jsonData.message;
+            // document.getElementById('file').value = ""
+        });
+    })
+
+</script>

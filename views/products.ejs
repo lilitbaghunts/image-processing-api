@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        th {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<table style="width:70%;">
+    <tr>
+        <th>title</th>
+        <th>image</th>
+        <th>upload</th>
+        <th>thumbnail</th>
+    </tr>
+    <% products && products.forEach(function(item) { %>
+        <tr>
+            <td><%= item.title %></td>
+            <% if (item.image) { %>
+              <td><img src="./uploads/product-images/<%= item.image %>" width="100" height="100"></td>
+            <% } %>
+            <td>
+              <form id="uploadProductForm" enctype="multipart/form-data">
+                  <input id="file" type="file" name="file" onchange="submitForm(event, <%= item.id %>)"/>
+<!--                  <button onclick="return submitForm(event, <%= item.id %>)" type="button">Upload image</button>-->
+              </form>
+            </td>
+
+        </tr>
+    <% }); %>
+
+</table>
+
+<script>
+
+    fetch(`/products`, {
+        method: 'GET'
+    }).then(function(response) {
+        console.log('done')
+    });
+
+
+    function submitForm(e, productId) {
+        e.preventDefault();
+        const file = e.target.files[0];
+        upload(productId, file)
+        return false;
+    }
+    function upload (productId, file) {
+        const form = document.getElementById('uploadProductForm')
+        const formData = new FormData(form)
+        formData.append('file', file);
+        fetch(`/product/${productId}/image`, {
+            method: 'POST',
+            body: formData
+        }).then(function(response) {
+            console.log(response.headers.get('Content-Type'));
+            console.log(response.headers.get('Date'));
+
+            console.log(response.status);
+            console.log(response.statusText);
+            console.log(response.type);
+            console.log(response.url);
+        });
+        // .then(res => res.json())
+        // .then(data => {
+        //     console.log(data)
+            // window.location.reload()
+          // document.getElementById('results').innerText = jsonData.message;
+          // document.getElementById('file').value = ""
+          //   document.getElementById('prodImg').attr('src', `/uploads/thumbnails/${data}`)
+          // document.getElementById('prodImg').attr('src', `/uploads/thumbnails/${data}`)
+
+        // });
+        // return false;
+    }
+
+</script>
+
+</body>
+</html>
