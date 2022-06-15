@@ -1,0 +1,16 @@
+{
+    "ROLES": {
+        "0": "admin",
+        "1": "consumer"
+    },
+    "ERRORS": {
+        "UNAUTHORIZED_USER": "User is not authorized",
+        "INVALID_ROLE": "Invalid user role",
+        "INVALID_TOKEN": "Invalid token",
+        "NO_TOKEN": "No token provided",
+        "INVALID_REFRESH_TOKEN": "Invalid refresh token",
+        "NO_REFRESH_TOKEN": "No refresh token provided",
+        "NOT_PERMITTED_ACTION": "Not permitted to take this action",
+        "TOKEN_EXPIRED": "Token has expired"
+    }
+} 
