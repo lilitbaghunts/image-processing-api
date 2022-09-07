@@ -1,4 +1,4 @@
-# Service for saving and processing images for products
+### Service for saving and processing images for products
 
 # Install packages
   `npm install`
