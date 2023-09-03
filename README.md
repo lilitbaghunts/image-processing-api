@@ -1,4 +1,4 @@
-### Service for saving and processing images for products
+### Service for processing images with Jimp
 
 # Install packages
   `npm install`
