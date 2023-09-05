@@ -16,5 +16,5 @@ Commands:
   POST /product/${id}/image
   GET /product/${id}/thumbnail
   GET /store/${id}/watermark
-  GET /store/${id}/watermark
+  POST /store/${id}/watermark
 ```
