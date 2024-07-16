@@ -1,9 +1,10 @@
 const fs = require('fs')
+const path = require('path')
 const Store = require('../models/store')
 const Product = require('../models/product')
 const runWorker = require('../utils/runWorker')
-const imagePath = `./uploads/watermarks`
 
+const watermarkPath = path.join(__dirname, '../uploads/watermarks')
 
 const createWatermark = async (req, res, next) => {
   try {
@@ -18,12 +19,14 @@ const createWatermark = async (req, res, next) => {
       },
       raw: true
     })
-    const image = store.get('watermark_image')
-    if (image && fs.existsSync(`${imagePath}/${image}`)) {
-      fs.unlinkSync(`${imagePath}/${image}`)
+    const currentImage = store.get('watermark_image')
+    if (currentImage && fs.existsSync(path.join(watermarkPath, currentImage))) {
+      fs.unlinkSync(path.join(watermarkPath, currentImage));
     }
     await store.update({ watermark_image: req.file.filename })
-    const promises = await products.filter(item => item.image).map(item => {
+    const promises = products
+      .filter(item => item.image)
+      .map(item => {
         runWorker({
           productId: item.id,
           productImage: item.image,
@@ -42,11 +45,12 @@ const getWatermark = async (req, res, next) => {
   try {
     const { id } = req.params
     let store = await Store.findByPk(id, { raw: true })
-    if (fs.existsSync(`./uploads/watermarks/${store.watermark_image}`)) {
-      return fs.createReadStream(`./uploads/watermarks/${store.watermark_image}`)
-          .pipe(res);
+    
+    if (store && store.watermark_image && fs.existsSync(path.join(watermarkPath, store.watermark_image))) {
+      fs.createReadStream(path.join(watermarkPath, store.watermark_image)).pipe(res);
+    } else {
+      res.status(404).json({ message: 'no watermark image found' });
     }
-    return res.status(404).json({ message: 'no image found' })
   } catch(err) {
     console.log(err)
     next(err)
