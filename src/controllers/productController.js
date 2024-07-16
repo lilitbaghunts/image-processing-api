@@ -2,7 +2,6 @@ const fs = require('fs')
 const path = require('path')
 const Store = require('../models/store')
 const Product = require('../models/product')
-const imagePath = `./uploads/product-images`
 const runWorker = require('../utils/runWorker')
 
 const imagePath = path.join(__dirname, '../uploads/product-images');
