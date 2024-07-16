@@ -22,15 +22,15 @@ const createWatermark = async (req, res, next) => {
     if (image && fs.existsSync(`${imagePath}/${image}`)) {
       fs.unlinkSync(`${imagePath}/${image}`)
     }
-    store.update({ watermark_image: req.file.filename })
-    const promises = products.filter(item => item.image).map(item => {
+    await store.update({ watermark_image: req.file.filename })
+    const promises = await products.filter(item => item.image).map(item => {
         runWorker({
           productId: item.id,
           productImage: item.image,
           watermarkImage: req.file.filename
         })
     })
-    Promise.all(promises)
+    await Promise.all(promises)
     res.status(200).json('success')
   } catch(err) {
     console.log(err)
