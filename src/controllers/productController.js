@@ -1,8 +1,12 @@
 const fs = require('fs')
+const path = require('path')
 const Store = require('../models/store')
 const Product = require('../models/product')
 const imagePath = `./uploads/product-images`
 const runWorker = require('../utils/runWorker')
+
+const imagePath = path.join(__dirname, '../uploads/product-images');
+const thumbnailPath = path.join(__dirname, '../uploads/thumbnails');
 
 const createProductImage = async (req, res, next) => {
   try {
@@ -23,8 +27,8 @@ const createProductImage = async (req, res, next) => {
     })
     
     const image = product.get('image')
-    if (image && fs.existsSync(`${imagePath}/${image}`)) {
-      fs.unlinkSync(`${imagePath}/${image}`)
+    if (image && fs.existsSync(path.join(imagePath, image))) {
+      fs.unlinkSync(path.join(imagePath, image));
     }
     await product.update({ image: req.file.filename })
 
@@ -39,23 +43,22 @@ const getProductImage = async (req, res, next) => {
   try {
     const { id } = req.params
     let product = await Product.findByPk(id, { raw: true })
-    if (product && fs.existsSync(`${imagePath}/${product.image}`)) {
-      fs.createReadStream(`${imagePath}/${product.image}`).pipe(res);
+    if (product && fs.existsSync(path.join(imagePath, product.image))) {
+      return fs.createReadStream(path.join(imagePath, product.image)).pipe(res);
     }
     return res.status(404).json({ message: 'no image found' })
   } catch(err) {
     console.log(err)
     next(err)
   }
-
 }
 
 const getProductThumbnail = async (req, res, next) => {
   try {
     const { id } = req.params
     let product = await Product.findByPk(id, { raw: true })
-    if (product && fs.existsSync(`./uploads/thumbnails/thumbnail-product-${product.id}.jpg`)) {
-      return fs.createReadStream(`./uploads/thumbnails/thumbnail-product-${product.id}.jpg`).pipe(res);
+    if (product && fs.existsSync(path.join(thumbnailPath, `thumbnail-product-${product.id}.jpg`))) {
+      return fs.createReadStream(path.join(thumbnailPath, `thumbnail-product-${product.id}.jpg`)).pipe(res);
     }
     return res.status(404).json({ message: 'no image found' })
   } catch(err) {
