@@ -1,11 +1,11 @@
-### Service for processing images with Jimp
+## Service for processing images with Jimp
 
 ### Description
 
 API designed for efficient image processing tasks using worker threads. It leverages the Jimp library for image manipulation and scales operations across multiple threads to enhance performance. This API supports various image processing operations such as resizing, watermarking, and more.
 
 
-# Install packages
+## Install packages
   `npm install`
 
 ## Run Migrations
