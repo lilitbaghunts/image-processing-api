@@ -21,11 +21,6 @@ API designed for efficient image processing tasks using worker threads. It lever
 - **`sequelize db:migrate --env localhost`**: Executes pending migrations to apply changes to the database schema based on your Sequelize configurations for the localhost environment.
 
 - **`sequelize db:migrate:undo:all --env localhost`**: Reverts all migrations, undoing changes made to the database schema.
-
-### Notes
-
-- Ensure your Sequelize CLI is properly configured with your environment settings.
-- Exercise caution when using `sequelize db:migrate:undo:all --env localhost`, especially in production environments.
   
   
 ## API Reference
